@@ -1,0 +1,51 @@
+{% include 'Navbar.html' %}
+<div class="nav-underline"></div>
+
+{% load static %}
+{% block content %}
+<div class="login-viewport d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="auth-card">
+                    <div class="card-accent-line"></div>
+                    
+                    <div class="auth-body p-5">
+                        <div class="text-center mb-4">
+                            <img src="{% static 'images/logo.png' %}" height="60" width="60" class="auth-logo mb-3" alt="logo">
+                            <h3 class="fw-800 slate-900 mb-1">Welcome Back</h3>
+                            <p class="text-muted small">Login to manage your agricultural assets</p>
+                        </div>
+
+                        {% if error %}
+                            <div class="alert alert-danger-soft text-center mb-4" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                            </div>
+                        {% endif %}
+
+                        <form action="" method="post" class="modern-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-wrapper">
+                                {{ obj.form.as_p }}
+                            </div>
+
+                            <button type="submit" class="btn btn-auth-primary w-100 mt-4">
+                                Sign In <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-5">
+                            <p class="text-muted small">
+                                Don't have an account? 
+                                <a href="/sign-up" class="text-emerald fw-bold text-decoration-none">Create Account</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'footer.html' %}

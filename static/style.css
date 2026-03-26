@@ -1,0 +1,569 @@
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    text-transform: capitalize;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+/* Professional Modern Navbar */
+.modern-nav {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #f1f5f9;
+    padding: 12px 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* FIX: This was hiding your logo */
+.navbar-img-logo {
+    border-radius: 8px; /* Clean rounded look instead of 50% circle if it's a square logo */
+    object-fit: contain;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-text {
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.8px;
+    color: #0f172a !important;
+}
+
+.brand-text .dot {
+    color: #10b981; /* Emerald Green */
+}
+
+/* Nav Links Styling */
+.navbar-nav .nav-link {
+    color: #64748b !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 18px !important;
+    transition: 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover, 
+.navbar-nav .nav-link.active {
+    color: #10b981 !important;
+}
+
+/* Dark Login Button */
+.btn-login {
+    background: #0f172a;
+    color: #fff !important;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 10px 24px !important;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Red Logout Button */
+.btn-logout {
+    background: #fef2f2;
+    color: #ef4444 !important;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 10px 24px !important;
+    border: 1px solid #fee2e2;
+}
+
+.btn-logout:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.section-title {
+    background-color: #023414 !important;
+    padding: 20px;
+    color: white !important;
+}
+
+.our_product {
+    /* padding:0px; */
+    margin-top: 50px;
+    margin-left: 7%;
+    box-shadow: 0px 5px 5px rgba(48, 36, 36, 0.3);
+    transition: all 0.5s ease;
+
+}
+
+.our_product:hover {
+    box-shadow: 2px 8px 8px rgba(0, 0, 0, 0.3);
+}
+
+.our_product img:hover {
+    transform: scale(1.1);
+}
+/* Centering the view */
+.login-viewport {
+    min-height: calc(100vh - 100px); /* Adjust based on nav/footer height */
+    background: radial-gradient(circle at top right, #f8fafc, #eff6ff);
+    padding: 40px 0;
+}
+
+/* The Professional Card */
+.auth-card {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-accent-line {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+
+.auth-logo {
+    border-radius: 12px;
+}
+
+.fw-800 { font-weight: 800; }
+.slate-900 { color: #0f172a; }
+.text-emerald { color: #10b981; }
+
+/* Styling the Django generated <p> and <input> tags */
+.modern-form p {
+    margin-bottom: 20px;
+}
+
+.modern-form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.modern-form input {
+    width: 100%;
+    padding: 10px 13px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.modern-form input:focus {
+    outline: none;
+    border-color: #10b981;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Professional Button */
+.btn-auth-primary {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-auth-primary:hover {
+    background: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+/* Soft Error Alert */
+.alert-danger-soft {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fee2e2;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    padding: 12px;
+}
+
+.reveal {
+    box-shadow: 0px 1px 0.2px rgba(48, 36, 36, 0.3);
+    transition: all 0.5s ease;
+    /* border-bottom: 2px solid black; */
+}
+
+.reveal:hover img {
+    border: 3px solid #ffc107;
+}
+
+.btn-kisan {
+    background: #023414;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 15px;
+    border: none;
+    width: 70%;
+    margin-left: 15%;
+    cursor: pointer;
+    /* Smooth transition zaroori hai animation ke liye */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-kisan:hover {
+    background: #055c25;
+    /* Thoda light/vibrant green */
+    transform: translateY(-3px) scale(1.02);
+    /* Button thoda upar uthega aur bada hoga */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    /* Shadow gehri hogi depth ke liye */
+    letter-spacing: 1px;
+    /* Text thoda stretch hoga premium look ke liye */
+}
+
+.btn-kisan:active {
+    transform: translateY(-1px);
+    /* Click karne par wapas thoda niche dabega */
+}
+
+   
+    .add-equipment-container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, var(--harvest-green), #1e7e34);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .section-title {
+        border-left: 5px solid var(--harvest-gold);
+        padding-left: 15px;
+        font-weight: 700;
+        color: var(--dark-earth);
+    }
+
+    .form-control:focus {
+        border-color: var(--harvest-green);
+        box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+    }
+
+    .btn-submit {
+        background-color: var(--harvest-green);
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #1e7e34;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    #imagePreview {
+        width: 100%;
+        max-height: 250px;
+        object-fit: cover;
+        border-radius: 15px;
+        display: none; /* Hidden until image is chosen */
+        margin-top: 15px;
+        border: 2px dashed #ddd;
+    }
+
+    .input-group-text {
+        background-color: #e9ecef;
+        color: var(--harvest-green);
+    }
+
+    a{
+        text-decoration: none;
+    }
+
+
+    
+
+
+    /* Card Container */
+.agri-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.agri-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* Image Wrapper & Small Height */
+.img-wrapper {
+    position: relative;
+    height: 200px; /* Kept small and consistent */
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+}
+
+.agri-card:hover img {
+    transform: scale(1.08);
+}
+
+/* The Half-Slide Action Bar */
+.action-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px; /* Smaller height */
+    background: rgba(46, 125, 50, 0.9); /* Agri Green */
+    display: flex;
+    transform: translateY(100%); /* Start hidden below */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.agri-card:hover .action-bar {
+    transform: translateY(0); /* Slides up on hover */
+}
+
+/* Action Buttons */
+.btn-action {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-action:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Typography */
+.category {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+.product-name {
+    font-size: 15px;
+    color: #333;
+}
+
+.price {
+    color: #2e7d32;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+
+
+.animate__animated h3,h6,h4
+{
+    font-weight: 850;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+    --emerald: #10b981;
+    --emerald-dark: #065f46;
+    --slate-900: #0f172a;
+    --slate-500: #64748b;
+    --ls-2: 0.1em;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #f8fafc;
+    color: var(--slate-900);
+    text-transform: none !important; /* Professional UI doesn't capitalize everything */
+}
+/* Hero Carousel Styling */
+.hero-carousel {
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    overflow: hidden;
+    /* Shadows add karne se premium look aayega */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.carousel-item {
+    height: 80vh; /* Mobile ke liye isse media query mein 50vh kar dena */
+    min-height: 450px;
+    position: relative;
+    background-color: #000; /* Loading ke time blank na dikhe */
+}
+
+.carousel-item img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover; /* Crop karega par stretch nahi hone dega */
+    object-position: center; /* Image ka center part dikhayega */
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    /* Gradient ko thoda smooth kiya hai */
+    background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+    text-align: left;
+    left: 8%; /* Thoda gap badhaya hai */
+    bottom: 25%; /* Thoda upar shift kiya hai readability ke liye */
+    max-width: 650px;
+    padding: 0 20px;
+}
+
+/* Mobile Responsive Fix */
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 60vh;
+    }
+    .carousel-caption {
+        left: 5%;
+        bottom: 15%;
+    }
+    .carousel-caption h1 {
+        font-size: 2rem; /* Mobile par headings choti honi chahiye */
+    }
+}
+/* Bento Feature Cards */
+.feature-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    border-color: var(--emerald);
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: #ecfdf5;
+    color: var(--emerald);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Product Cards */
+.product-glass-card {
+    background: white;
+    border-radius: 24px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s ease;
+}
+
+.product-glass-card:hover {
+    box-shadow: 0 30px 50px -12px rgba(0,0,0,0.1);
+}
+
+.product-img {
+    height: 220px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 800;
+    color: var(--emerald-dark);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.product-info {
+    padding: 1.5rem 0.5rem 0.5rem;
+}
+
+.btn-dark-modern {
+    background: var(--slate-900);
+    color: white;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-dark-modern:hover {
+    background: #000;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* CTA Banner */
+.cta-banner {
+    background: linear-gradient(135deg, #065f46 0%, #0f172a 100%);
+    border-radius: 32px;
+}
+
+/* Utility */
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+.ls-2 { letter-spacing: 0.15em; }
+.text-emerald { color: var(--emerald); }
+
+

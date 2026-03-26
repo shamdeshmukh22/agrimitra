@@ -1,0 +1,255 @@
+{% block content %}
+{% include 'Navbar.html' %}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --kisan-main: #059669; /* Emerald Green */
+        --kisan-dark: #064e3b;
+        --kisan-light: #ecfdf5;
+        --border-color: #e2e8f0;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: #1e293b;
+    }
+
+    .main-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .glass-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Sidebar Styling */
+    .sidebar-info {
+        background: linear-gradient(180deg, var(--kisan-main), var(--kisan-dark));
+        color: white;
+        padding: 40px;
+        height: 100%;
+    }
+
+    .feature-tag {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(5px);
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Form Fields Styling (Sleek & Compact) */
+    .form-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #475569;
+        margin-bottom: 6px;
+    }
+
+    .form-control, .form-select {
+        height: 42px; /* Compact height */
+        background-color: #fcfcfc;
+        border: 1.5px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        padding: 0 12px;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--kisan-main);
+        box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+        background-color: white;
+    }
+
+    textarea.form-control {
+        height: auto !important;
+        min-height: 100px;
+        padding: 12px;
+    }
+
+    /* Image Upload Section */
+    .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        background: #fdfdfd;
+        position: relative;
+    }
+
+    .upload-area:hover {
+        border-color: var(--kisan-main);
+        background: var(--kisan-light);
+    }
+
+    #image-preview {
+        max-width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: none; /* Hidden until image selected */
+        margin-top: 10px;
+    }
+
+    /* Buttons */
+    .btn-save {
+        background-color: var(--kisan-main);
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+    .btn-save:hover {
+        background-color: var(--kisan-dark);
+        transform: translateY(-2px);
+    }
+
+    .section-divider {
+        height: 1px;
+        background: var(--border-color);
+        margin: 20px 0;
+    }
+</style>
+
+<section class="main-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="glass-card animate__animated animate__fadeInUp">
+                    <div class="row g-0">
+                        
+                        <div class="col-lg-4 d-none d-lg-block">
+                            <div class="sidebar-info">
+                                <div class="mb-5">
+                                    <h3 class="fw-bold">Listing Portal</h3>
+                                    <p class="opacity-75 small">Join 5000+ farmers earning daily.</p>
+                                </div>
+
+                                <div class="feature-tag">
+                                    <i class="bi bi-lightning-charge-fill text-warning"></i>
+                                    <span>Instant Visibility to nearby farmers</span>
+                                </div>
+                                <div class="feature-tag">
+                                    <i class="bi bi-shield-lock-fill"></i>
+                                    <span>Secure Rental Agreements</span>
+                                </div>
+                                <div class="feature-tag">
+                                    <i class="bi bi-headset"></i>
+                                    <span>24/7 Dedicated Support</span>
+                                </div>
+
+                                <div class="mt-auto pt-5">
+                                    <div class="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-10">
+                                        <p class="mb-0 x-small text-white-50 text-uppercase tracking-wider">Need assistance?</p>
+                                        <p class="mb-0 fw-bold">support@AgriMitra.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="fw-bold mb-0 text-dark">Add New Equipment</h4>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">Step 1 of 1</span>
+                                </div>
+
+                                <form method="POST" enctype="multipart/form-data" id="equipmentForm">
+                                    {% csrf_token %}
+
+                                    <div class="row g-3">
+                                      {% for field in obj.form %}
+    {% if field.name != 'image' %}
+        <div class="col-md-{% if field.name|lower == 'description' %}12{% else %}6{% endif %}">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger mt-1" style="font-size: 0.75rem;">
+                    <i class="bi bi-exclamation-circle me-1"></i>{{ field.errors.0 }}
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="col-12 mt-2">
+            <label class="form-label">Equipment Photo</label>
+            <label class="upload-area d-block" for="{{ field.id_for_label }}">
+                <div id="upload-placeholder">
+                    <i class="bi bi-cloud-arrow-up fs-2 text-success"></i>
+                    <p class="mb-0 small fw-medium">Upload high-quality image</p>
+                    <p class="text-muted mb-0" style="font-size: 11px;">Max 5MB (JPG, PNG)</p>
+                </div>
+                <img id="image-preview" src="#" alt="Preview" style="display:none; margin: 0 auto;" />
+                <div class="d-none">{{ field }}</div>
+            </label>
+        </div>
+    {% endif %}
+{% endfor %}
+                                           
+                                              
+                                    </div>
+
+                                    <div class="section-divider"></div>
+
+                                    <div class="row g-3 align-items-center">
+                                        <div class="col-6 col-md-4">
+                                            <button type="reset" class="btn btn-link text-decoration-none text-muted w-100 fw-medium">Clear All</button>
+                                        </div>
+                                        <div class="col-6 col-md-8 text-end">
+                                            <button type="submit" class="btn btn-save btn-success w-100 text-white shadow-sm">
+                                                <i class="bi bi-plus-lg me-2"></i>Publish Listing
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const fileInput = document.querySelector('input[type="file"]');
+    const previewImg = document.getElementById('image-preview');
+    const placeholder = document.getElementById('upload-placeholder');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

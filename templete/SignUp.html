@@ -1,0 +1,90 @@
+{% include 'Navbar.html' %}
+<div class="nav-underline"></div>
+
+{% load static %}
+{% block content %}
+<div class="auth-viewport d-flex align-items-center justify-content-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 mx-auto">
+                <div class="auth-card shadow-lg">
+                    <div class="card-accent-line"></div>
+                    
+                    <div class="auth-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <img src="{% static 'images/logo.png' %}" height="55" width="55" class="auth-logo mb-3" alt="logo">
+                            <h3 class="fw-800 slate-900 mb-1">Join AgriMitra</h3>
+                            <p class="text-muted small">Create an account to start renting tools</p>
+                        </div>
+
+                        <form method="POST" class="modern-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-compact">
+                                {{ obj.form.as_p }}
+                            </div>
+
+                            <button type="submit" class="btn btn-auth-primary w-100 mt-3">
+                                Create Account <i class="fas fa-user-plus ms-2"></i>
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted small mb-0">
+                                Already have an account? 
+                                <a href="/login" class="text-emerald fw-bold text-decoration-none">Login Here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Viewport setting for proper centering */
+.auth-viewport {
+    min-height: calc(100vh - 150px);
+    background: #f8fafc;
+}
+
+/* Compact form spacing for Sign-up */
+.form-compact p {
+    margin-bottom: 12px !important; /* Space between fields kam kar diya */
+}
+
+/* Input boxes ko slim rakhne ke liye */
+.modern-form input {
+    padding: 10px 14px !important;
+    font-size: 0.9rem !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+    width: 100%;
+}
+
+.modern-form label {
+    font-size: 0.75rem !important;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+/* Button behavior */
+.btn-auth-primary {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+/* Card Styling */
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+</style>
+{% endblock %}
+{% include 'footer.html' %}

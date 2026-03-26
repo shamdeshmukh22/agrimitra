@@ -1,0 +1,233 @@
+{% block content %}
+{% include 'Navbar.html' %}
+
+
+
+<style>
+    :root {
+        --kisan-main: #059669;
+        --border: #e2e8f0;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: #334155;
+    }
+
+    .reject-wrapper {
+        max-width: 650px;
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+
+    .glass-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+
+    .alert-warning {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+
+    .form-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        font-size: 0.88rem;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+    }
+
+    .form-control:focus {
+        border-color: var(--kisan-main);
+        box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.1);
+    }
+
+    .order-info {
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+    .info-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-label {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .btn-reject {
+        background: #f87171;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-reject:hover {
+        background: #dc2626;
+    }
+
+    .btn-cancel {
+        background: white;
+        color: var(--kisan-main);
+        border: 2px solid var(--kisan-main);
+        padding: 10px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cancel:hover {
+        background: #f0fdf4;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: var(--border);
+        margin: 20px 0;
+    }
+
+    .character-count {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 4px;
+        text-align: right;
+    }
+</style>
+
+<div class="reject-wrapper">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1"><i class="bi bi-x-circle text-danger me-2"></i>Reject Rental Request</h2>
+        <p class="text-muted">Provide a reason for rejecting this booking</p>
+    </div>
+
+    <div class="glass-card">
+        <!-- Booking Info -->
+        <h6 class="fw-bold text-uppercase mb-3">Request Details</h6>
+        <div class="order-info">
+            <div class="info-row">
+                <span class="info-label">Request ID</span>
+                <span class="info-value">#{{ obj.order.id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Customer</span>
+                <span class="info-value">Check-in: {{ obj.order.Check_in|date:"d M Y" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Check-out</span>
+                <span class="info-value">{{ obj.order.Check_out|date:"d M Y" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Total Amount</span>
+                <span class="info-value">₹{{ obj.order.total_amount }}</span>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Important:</strong> The customer will be notified about the rejection with your remarks.
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Rejection Form -->
+        <h6 class="fw-bold text-uppercase mb-3">Rejection Reason</h6>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label class="form-label" for="remarks">Your Message to Customer (Optional)</label>
+                <textarea 
+                    name="remarks" 
+                    id="remarks" 
+                    class="form-control" 
+                    rows="5" 
+                    placeholder="Explain why you're rejecting this request. Be polite and professional."
+                    maxlength="500"></textarea>
+                <div class="character-count">
+                    <span id="charCount">0</span>/500 characters
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <small class="text-muted d-block mb-2">
+                    <i class="bi bi-info-circle me-1"></i>
+                    <strong>Tip:</strong> Help customers understand your decision. Mention if equipment is unavailable for those dates, needs maintenance, or other reasons.
+                </small>
+            </div>
+
+            <div class="button-group">
+                <a href="{% url 'owner_requests' %}" class="btn-cancel">
+                    <i class="bi bi-arrow-left me-1"></i>Back
+                </a>
+                <button type="submit" class="btn-reject">
+                    <i class="bi bi-x-circle me-1"></i>Reject Request
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const remarksTextarea = document.getElementById('remarks');
+    const charCount = document.getElementById('charCount');
+
+    remarksTextarea.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'footer.html' %}
+{% endblock %}

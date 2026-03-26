@@ -1,0 +1,373 @@
+{% block content %}
+{% include 'Navbar.html' %}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --kisan-main: #059669;
+        --border: #e2e8f0;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: #334155;
+    }
+
+    .requests-wrapper {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+
+    .card {
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid var(--border);
+    }
+
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--kisan-main);
+    }
+
+    .stats-label {
+        font-size: 0.85rem;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-top: 8px;
+    }
+
+    .badge-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-accepted {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-rejected {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-paid {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .request-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .customer-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .customer-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+    }
+
+    .equipment-info {
+        background: #f1f5f9;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .equipment-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 12px;
+    }
+
+    .dates-section {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .date-box {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .date-label {
+        font-size: 0.75rem;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .date-value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-approve {
+        background: var(--kisan-main);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-approve:hover {
+        background: #047857;
+    }
+
+    .btn-reject {
+        background: #f87171;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-reject:hover {
+        background: #dc2626;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: var(--border);
+        margin: 15px 0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    .empty-text {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .price-info {
+        background: #f0fdf4;
+        border-left: 3px solid var(--kisan-main);
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    .price-label {
+        font-size: 0.75rem;
+        color: #4b5563;
+        text-transform: uppercase;
+    }
+
+    .price-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--kisan-main);
+    }
+</style>
+
+<div class="requests-wrapper">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-3"><i class="bi bi-inbox text-success me-2"></i>Rental Requests</h2>
+        <p class="text-muted">Manage all customer rental requests for your equipment</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ obj.pending }}</div>
+                <div class="stats-label">Pending request</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ obj.accepted }}</div>
+                <div class="stats-label">Approved</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ obj.rejected }}</div>
+                <div class="stats-label">Rejected</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="stats-number">{{ obj.requests|length }}</div>
+                <div class="stats-label">Total Requests</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requests List -->
+
+    {% if obj.requests %}
+    <div class="row">
+        {% for req in obj.requests %}
+         <div class="col-md-6 mt-4">
+        <div class="request-card  ">
+            <div class="request-header">
+                <div>
+                    <h5 class="mb-0 fw-bold">{{ req.equipment.name }}</h5>
+                    <p class="text-muted small mb-0">Request ID: #{{ req.id }}</p>
+                </div>
+                <span class="badge badge-{{ req.status }}">{{ req.get_status_display }}</span>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="customer-info">
+                <img src="https://ui-avatars.com/api/?name={{req.customer.name}}&background=059669&color=fff" 
+                     class="customer-avatar">
+                <div>
+                    <div class="fw-bold small">{{ req.customer.name }}</div>
+                    <div class="text-muted small"><i class="bi bi-telephone me-1"></i>{{ req.customer.mobile }}</div>
+                    <div class="text-muted tiny" style="font-size: 0.75rem;">Requested: {{ req.requested_at|date:"d M Y, h:i A" }}</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Equipment & Dates Info -->
+            <div class="equipment-info">
+                <div class="d-flex align-items-center">
+                    <img src="{{ req.equipment.image.url }}" class="equipment-img">
+                    <div>
+                        <div class="fw-bold small">{{ req.equipment.name }}</div>
+                        <div class="text-muted small">Brand: {{ req.equipment.brand }}</div>
+                        <div class="text-muted small">Condition: {{ req.equipment.condition }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rental Dates -->
+            <div class="dates-section">
+                <div class="date-box">
+                    <div class="date-label"><i class="bi bi-calendar-event me-1"></i>Check-in</div>
+                    <div class="date-value">{{ req.Check_in|date:"d M Y" }}</div>
+                </div>
+                <div class="date-box">
+                    <div class="date-label"><i class="bi bi-calendar-check me-1"></i>Check-out</div>
+                    <div class="date-value">{{ req.Check_out|date:"d M Y" }}</div>
+                </div>
+                <div class="date-box">
+                    <div class="date-label"><i class="bi bi-hourglass-split me-1"></i>Duration</div>
+                    <div class="date-value">{{ req.get_days }} Days</div>
+                </div>
+            </div>
+
+            <!-- Price Info -->
+            <div class="price-info">
+                <div class="price-label">Total Rental Amount</div>
+                <div class="price-value">₹{{ req.total_amount }}</div>
+                <small class="text-muted">{{ req.rent }} per day × {{ req.get_days }} days</small>
+            </div>
+
+            <!-- Customer Address -->
+            <div class="mb-3">
+                <small class="text-muted text-uppercase d-block mb-1">Customer Address</small>
+                <small class="text-dark">{{ req.customer_address }}</small>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Action Buttons -->
+            {% if req.status == 'pending' %}
+            <div class="action-buttons">
+                <form method="POST" action="{% url 'approve_request' req.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-approve">
+                        <i class="bi bi-check-circle me-1"></i>Approve Request
+                    </button>
+                </form>
+                <a href="{% url 'reject_request' req.id %}" class="btn-reject">
+                    <i class="bi bi-x-circle me-1"></i>Reject Request
+                </a>
+            </div>
+            {% elif req.status == 'payment_pending' %}
+            <div class="alert alert-warning">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Awaiting Payment</strong> - Customer has 24 hours to complete payment
+            </div>
+            {% elif req.status == 'rejected' %}
+            <div class="alert alert-danger">
+                <strong>Rejected</strong>
+                <p class="mb-0 mt-2" style="font-size: 0.85rem;">Your Remarks: {{ req.owner_remarks }}</p>
+            </div>
+            {% elif req.status == 'accepted' %}
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong>Booking Confirmed</strong> - Payment completed successfully
+            </div>
+            {% endif %}
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon"><i class="bi bi-inbox"></i></div>
+        <h5 class="fw-bold mb-2">No Rental Requests</h5>
+        <p class="empty-text">You don't have any rental requests yet. When customers request to rent your equipment, they'll appear here.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'footer.html' %}
+{% endblock %}

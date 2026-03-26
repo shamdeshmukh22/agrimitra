@@ -1,0 +1,222 @@
+{% block content %}
+{% include 'Navbar.html' %}
+
+
+
+
+
+<div class="container py-4">
+    <nav class="mb-4" style="--bs-breadcrumb-divider: '›';">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item active fw-semibold">{{ obj.equipment.categories }}</li>
+            <li class="breadcrumb-item active fw-semibold">{{ obj.equipment.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+             <div class="d-flex justify-content-end pe-2  gap-2 mb-1">
+                    <!-- <span class="badge bg-success  border">Verified</span> -->
+                </div>
+            <div class="img-card">
+                <img src="{{ obj.equipment.image.url }}" class="main-img" alt="Equipment">
+               
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="ps-lg-2">
+                <h1 class="mb-2">{{ obj.equipment.name }}</h1>
+                <p class="text-muted small mb-4"><i class="bi bi-geo-alt me-1"></i> Pune, Maharashtra • 2.5 km away</p>
+
+                <div class="price-box d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="spec-label">Rental Rate</span>
+                        <div class="price-val">₹{{ obj.equipment.rent }} <span class="text-muted fs-6 fw-normal">/ day</span></div>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Available</span>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-4">
+                    <div class="col-6 col-md-4">
+                        <div class="spec-item">
+                            <i class="bi bi-lightning"></i>
+                            <div>
+                                <span class="spec-label">Condition</span>
+                                <span class="fw-semibold small"> {{ obj.equipment.condition }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="spec-item">
+                            <i class="bi bi-calendar3"></i>
+                            <div>
+                                <span class="spec-label">Model Year</span>
+                                <span class="fw-semibold small"> {{ obj.equipment.year }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold small text-uppercase text-muted mb-2">Description</h6>
+                    <div class="description-text">
+                        {{ obj.equipment.Description }}
+                    </div>
+                </div>
+
+                    {% if obj.equipment.user_id != obj.user_id %}
+                    <div class="action-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 border-end-md">
+                                <div class="d-flex align-items-center gap-3 mb-3 mb-md-0">
+                                    <img src="https://ui-avatars.com/api/?name={{obj.owner.name}}&background=059669&color=fff" class="rounded-circle" width="40">
+                                    <div>
+                                        <div class="fw-bold small">{{obj.owner.name}}</div>
+                                        <div class="text-muted" style="font-size: 11px;">Identity Verified User</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 ps-md-4">
+                                <div class="d-flex gap-2">
+                                 <button class="btn-main ">   <a href="{% url 'rent-now' obj.equipment.id %}" class="text-white">Rent Now </a> </button>
+                                    <!-- <button class="btn btn-outline-secondary px-3"><i class="bi bi-chat"></i></button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                
+                    <div class="action-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 border-end-md">
+                <a href="{% url 'edit-my-equipment' obj.equipment.id %}" class="btn-primary-sm ms-2">
+                    <div class="d-flex gap-2">
+                                    <button class="btn-main">Edit Equipment</button>
+                                </div>
+                </a>
+                                </div>
+                                </div>
+                                </div>
+
+                    
+                    {% endif %}
+
+                 
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    :root {
+        --kisan-green: #059669;
+        --kisan-dark: #1e293b;
+        --border-color: #e2e8f0;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif; /* Clean & Standard font */
+        background-color: #f8fafc;
+        color: var(--kisan-dark);
+        font-size: 0.95rem; /* Standard base size */
+    }
+
+    /* Product Image - Fixed Aspect Ratio */
+    .img-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 10px;
+        position: sticky;
+        top: 90px;
+    }
+
+    .main-img {
+        width: 100%;
+        height: 380px; /* Reduced height */
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    /* Balanced Headings */
+    h1 { 
+        font-size: 1.75rem !important; /* Not too big */
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    /* Professional Price Box */
+    .price-box {
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--kisan-green);
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .price-val {
+        font-size: 1.5rem; /* Balanced price size */
+        font-weight: 800;
+        color: var(--kisan-green);
+    }
+
+    /* Specs Grid - Compact */
+    .spec-item {
+        background: #f1f5f9;
+        border-radius: 8px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .spec-item i {
+        font-size: 1.1rem;
+        color: var(--kisan-green);
+    }
+
+    .spec-label {
+        font-size: 0.75rem;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: 600;
+        display: block;
+    }
+
+    /* Owner & Action Section */
+    .action-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .btn-main {
+        background: var(--kisan-green);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        width: 100%;
+        transition: 0.2s;
+    }
+
+    .btn-main:hover {
+        background: #047857;
+    }
+
+    .description-text {
+        line-height: 1.6;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+</style>
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,142 @@
+{% load static %}
+{% include 'Navbar.html' %}
+
+<div class="hero-carousel">
+    <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
+        </div>
+
+        <div class="carousel-inner">
+            
+            <div class="carousel-item active">
+                <div class="overlay"></div>
+                <img src="{% static 'images/kisan1.jpg' %}" class="d-block w-100" alt="Farmer">
+                <div class="carousel-caption">
+                    <span class="badge-tag">Empowering Farmers</span>
+                    <h1 class="display-4 fw-bold">Modern Tools for Better Yield</h1>
+                    <p class="lead">Rent high-quality agricultural machinery at your fingertips.</p>
+                    <a href="/equipment" class="btn btn-success px-4 py-2 mt-3 shadow-sm">Explore Equipment</a>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="overlay"></div>
+                <img src="{% static 'images/bg2.avif' %}" class="d-block w-100" alt="Equipment">
+                <div class="carousel-caption">
+                    <span class="badge-tag">Earn Extra Income</span>
+                    <h1 class="display-4 fw-bold">Rent Out Your Spare Machinery</h1>
+                    <p class="lead">Turn your idle equipment into profit. List your tractor or tools with AgriMitra today.</p>
+                    <a href="/add-equipment" class="btn btn-success px-4 py-2 mt-3 shadow-sm">Start Earning</a>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="overlay"></div>
+                <img src="{% static 'images/bg1.jpg' %}" class="d-block w-100" alt="Agriculture">
+                <div class="carousel-caption">
+                    <span class="badge-tag">Trusted Community</span>
+                    <h1 class="display-4 fw-bold">Affordable Tech for Every Field</h1>
+                    <p class="lead">No more huge investments. Access modern farming tech on a daily rental basis.</p>
+                    <a href="/equipment" class="btn btn-success px-4 py-2 mt-3 shadow-sm">Browse Catalog</a>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+
+    </div>
+</div>
+<section class="container py-6">
+    <div class="text-center mb-5">
+        <h6 class="text-emerald fw-bold text-uppercase ls-2">Why AgriMitra?</h6>
+        <h2 class="display-5 fw-bold">Crafted for the Modern Farmer</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="feature-card">
+                <div class="icon-circle"><i class="fas fa-hand-holding-usd"></i></div>
+                <h4>Affordable</h4>
+                <p>Pay only for the hours you work. No hidden costs.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-card">
+                <div class="icon-circle"><i class="fas fa-check-circle"></i></div>
+                <h4>Verified</h4>
+                <p>Every machine is inspected for peak performance.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-card">
+                <div class="icon-circle"><i class="fas fa-clock"></i></div>
+                <h4>Fast Sync</h4>
+                <p>On-demand delivery directly to your field location.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-card">
+                <div class="icon-circle"><i class="fas fa-headset"></i></div>
+                <h4>Expert Support</h4>
+                <p>Our agronomists are available 24/7 for help.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="products" class="bg-light-surface py-6">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <h2 class="fw-bold mb-0">Trending Equipment</h2>
+                <p class="text-muted">Most booked tools in your region this month.</p>
+            </div>
+            <a href="/equipment" class="btn btn-outline-dark rounded-pill px-4">View All</a>
+        </div>
+
+        <div class="row g-4">
+            {% for item in obj.equipment %}
+            <div class="col-lg-4 col-md-6">
+                <div class="product-glass-card">
+                    <div class="product-img">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                        {% else %}
+                            <div class="no-img">No Image Available</div>
+                        {% endif %}
+                        <div class="price-tag">₹{{ item.rent }}/day</div>
+                    </div>
+                    <div class="product-info">
+                        <small class="text-emerald fw-bold">{{ item.category|upper }}</small>
+                        <h4 class="fw-bold mt-1">{{ item.name }}</h4>
+                        <div class="owner-line mt-3 mb-4">
+                            <span class="text-muted">{{ item.Description|truncatechars:100 }}</span>
+                        </div>
+                        <a href="{% url 'view-more' item.id %}" class="btn btn-dark-modern w-100">View More <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-banner mx-3 my-5">
+    <div class="container text-center py-5">
+        <h2 class="display-5 fw-bold text-white">Have Equipment Sitting Idle?</h2>
+        <p class="text-white-50 mb-4">Join 500+ owners earning monthly by listing their tools.</p>
+        <a href="/add-equipment" class="btn btn-light btn-lg px-5 fw-bold">Start Earning Today</a>
+    </div>
+</section>
+
+{% include 'footer.html' %}

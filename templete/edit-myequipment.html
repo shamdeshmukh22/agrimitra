@@ -1,0 +1,225 @@
+{% block content %}
+{% include 'Navbar.html' %}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --brand-success: #059669;
+        --brand-dark: #0f172a;
+        --soft-bg: #f8fafc;
+        --border-muted: #e2e8f0;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--soft-bg);
+        color: var(--brand-dark);
+        font-size: 0.9rem;
+    }
+
+    .edit-container {
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    /* Glass Card Design */
+    .glass-panel {
+        background: white;
+        border: 1px solid var(--border-muted);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Left Preview Panel */
+    .current-preview {
+        background: #f1f5f9;
+        padding: 30px;
+        height: 100%;
+        border-right: 1px solid var(--border-muted);
+    }
+
+    .preview-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 3px solid white;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    /* Form Styling - Compact & Modern */
+    .form-label {
+        font-weight: 600;
+        font-size: 0.8rem;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .form-control, .form-select {
+        height: 40px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border-muted);
+        font-size: 0.9rem;
+        padding: 0 12px;
+        transition: 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: var(--brand-success);
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+    }
+
+    textarea.form-control {
+        height: auto !important;
+        min-height: 100px;
+        padding: 10px;
+    }
+
+    /* Image Update Area */
+    .image-update-box {
+        border: 2px dashed var(--border-muted);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        background: #fafafa;
+    }
+
+    .image-update-box:hover {
+        border-color: var(--brand-success);
+        background: #f0fdf4;
+    }
+
+    /* Buttons */
+    .btn-update {
+        background: var(--brand-success);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .btn-update:hover {
+        background: #047857;
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: transparent;
+        color: #64748b;
+        border: 1px solid var(--border-muted);
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div class="container edit-container">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="fw-bold mb-1 text-dark">Manage Equipment</h4>
+            <p class="text-muted small">Update your listing details for <strong>{{ obj.equipment.name }}</strong></p>
+        </div>
+        <a href="/your-performerce" class="text-decoration-none small fw-bold text-success">
+            <i class="bi bi-arrow-left me-1"></i> Back to Listings
+        </a>
+    </div>
+
+    <div class="glass-panel">
+        <div class="row g-0">
+            <div class="col-lg-4 d-none d-lg-block">
+                <div class="current-preview">
+                    <h6 class="fw-bold mb-3 small">Current View</h6>
+                    <img src="{{ obj.equipment.image.url }}" class="preview-img" id="img-live-preview">
+                    
+                    <div class="p-3 bg-white rounded-3 border mb-3">
+                        <small class="text-muted d-block">Current Rent</small>
+                        <span class="fw-bold text-success fs-5">₹{{ obj.equipment.rent }}</span>
+                        <small class="text-muted">/ Day</small>
+                    </div>
+
+                    <div class="alert alert-warning py-2 border-0 rounded-3" style="font-size: 0.75rem;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Updating details may require a quick re-verification by our team.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="p-4 p-md-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            {% for field in obj.form %}
+                                {% if field.name != 'image' %}
+                                    <div class="col-md-{% if field.name == 'description' %}12{% else %}6{% endif %}">
+                                        <label class="form-label">{{ field.label }}</label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="text-danger x-small">{{ field.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="col-12 mt-2">
+                                        <label class="form-label">Change Photo (Keep blank to keep current)</label>
+                                        <div class="image-update-box" onclick="document.getElementById('{{ field.id_for_label }}').click();">
+                                            <i class="bi bi-camera text-muted me-2"></i>
+                                            <span class="small fw-medium text-muted">Click to select new image</span>
+                                            <div style="display:none">{{ field }}</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <hr class="my-4 opacity-50">
+
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <button type="submit" class="btn-update">
+                                    <i class="bi bi-check-circle me-2"></i>Save All Changes
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#" class="btn-cancel">Discard</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.querySelector('input[type="file"]');
+    const livePreview = document.getElementById('img-live-preview');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    livePreview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}
