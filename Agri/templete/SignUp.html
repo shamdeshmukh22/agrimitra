@@ -1,0 +1,148 @@
+{% include 'Navbar.html' %}
+{% load static %}
+
+<div class="auth-viewport">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-5">
+                
+                <div class="auth-card border-0 shadow-medium">
+                    <div class="auth-card-accent"></div>
+                    
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <div class="text-center mb-4">
+                            <img src="{% static 'images/logo.png' %}" 
+                                 alt="AgriMitra Logo" 
+                                 class="auth-logo mb-3 rounded-3" 
+                                 style="max-height: 55px; width: 55px; object-fit: contain;">
+                            <h3 class="fw-extrabold text-dark mb-1">Join AgriMitra</h3>
+                            <p class="text-muted small">Location access is required to register</p>
+                        </div>
+
+                        <form method="POST" id="signupForm" class="modern-form">
+                            {% csrf_token %}
+                            
+                            <div class="modern-form mb-3">
+                                {{ obj.form.as_p }}
+                            </div>
+
+                            <div id="location-status-container">
+                                <div id="location-success" class="alert alert-success d-none py-2.5 px-3 small border-0 mb-3 d-flex align-items-center gap-2" style="background-color: #e8f5e9; color: #2e7d32;">
+                                    <i class="bi bi-check-circle-fill"></i> <span>Location secured. You can now register.</span>
+                                </div>
+
+                                <div id="location-error" class="alert alert-danger d-none py-2.5 px-3 small border-0 mb-3" style="background-color: #ffebee; color: #c62828;">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span><i class="bi bi-geo-alt-fill me-2"></i> Location denied.</span>
+                                        <button type="button" class="btn btn-sm btn-danger px-3 rounded-pill" onclick="getLocation()">Try Again</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-center">
+                                <button type="submit" id="submitBtn" class="btn btn-primary-green w-100 py-3 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" disabled>
+                                    <span>Create Account</span> <i class="bi bi-person-plus-fill"></i>
+                                </button>
+                                <p id="btn-helper" class="text-muted x-small mt-3 mb-0" style="font-size: 0.75rem;">
+                                    <i class="fas fa-spinner fa-spin me-1"></i> Waiting for GPS coordinates...
+                                </p>
+                            </div>
+                        </form>
+
+                        <hr class="my-4 text-muted opacity-25">
+                        
+                        <div class="text-center">
+                            <p class="mb-0 text-muted small">
+                                Already a member? 
+                                <a href="/login" class="text-emerald fw-bold text-decoration-none">Login Here</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+    const latInput = document.getElementById('id_latitude');
+    const lonInput = document.getElementById('id_longitude');
+    const statusSuccess = document.getElementById('location-success');
+    const statusError = document.getElementById('location-error');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnHelper = document.getElementById('btn-helper');
+
+    function getLocation() {
+        // Reset Visuals
+        statusError.classList.add('d-none');
+        statusSuccess.classList.add('d-none');
+        btnHelper.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Requesting GPS access...';
+        btnHelper.classList.remove('text-danger');
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // 1. Fill Hidden Fields
+                    latInput.value = position.coords.latitude;
+                    lonInput.value = position.coords.longitude;
+                    
+                    // 2. Update UI
+                    statusSuccess.classList.remove('d-none');
+                    btnHelper.classList.add('d-none'); 
+                    
+                    // 3. Unlock Form
+                    submitBtn.disabled = false;
+                    console.log("Location obtained successfully.");
+                    console.log('latitude' , position.coords.latitude);
+                    console.log('longitude' , position.coords.longitude);
+                    fetchAddress(position.coords.latitude, position.coords.longitude, 'id_address');
+                },
+                function(error) {
+                    // Handle Denied/Timed out
+                    console.warn("Location Error: " + error.message);
+                    statusError.classList.remove('d-none');
+                    btnHelper.innerHTML = '<i class="fas fa-lock me-1"></i> Access Denied';
+                    btnHelper.classList.add('text-danger');
+                    submitBtn.disabled = true;
+                },
+                { 
+                    enableHighAccuracy: true,
+                    timeout: 10000 
+                }
+            );
+        } else {
+            btnHelper.innerText = "Browser does not support Geolocation.";
+        }
+    }
+
+    // Attempt to get location automatically when page loads
+    document.addEventListener('DOMContentLoaded', getLocation);
+
+      async function fetchAddress(lat, lon, elementId) {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+          );
+          const data = await res.json();
+          document.getElementById(elementId).value =
+            data.display_name || "Address not found";
+        } catch (e) {
+          document.getElementById(elementId).value =
+            "Error fetching address";
+        }
+      }
+</script>
+
+<style>
+    /* Hide the lat/long fields if they appear in as_p by accident */
+    #id_latitude, #id_longitude {
+        display: none !important;
+    }
+    label[for="id_latitude"], label[for="id_longitude"] {
+        display: none !important;
+    }
+</style>

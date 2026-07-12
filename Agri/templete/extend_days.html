@@ -1,0 +1,151 @@
+{% block content %}
+{% include 'Navbar.html' %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+  body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); min-height: 100vh; }
+
+  .page-wrap { max-width: 700px; margin: 50px auto; padding: 0 20px 60px; }
+
+  .back-link { display: inline-flex; align-items: center; gap: 6px; color: #059669; font-weight: 500; text-decoration: none; margin-bottom: 30px; font-size: 0.9rem; transition: gap 0.2s; }
+  .back-link:hover { gap: 10px; color: #047857; }
+
+  .card-main { background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(5,150,105,0.1); overflow: hidden; }
+
+  .card-header-custom { background: linear-gradient(135deg, #059669, #10b981); padding: 35px 35px 30px; color: white; }
+  .card-header-custom h1 { font-size: 1.7rem; font-weight: 700; margin: 0 0 6px; }
+  .card-header-custom p  { opacity: 0.85; margin: 0; font-size: 0.95rem; }
+
+  .card-body-custom { padding: 35px; }
+
+  .order-summary { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 20px 22px; margin-bottom: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .summary-item label { font-size: 0.72rem; color: #6b7280; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 3px; }
+  .summary-item span  { font-size: 1rem; font-weight: 600; color: #1e293b; }
+
+  .form-label-custom { font-weight: 600; color: #374151; font-size: 0.9rem; margin-bottom: 8px; display: block; }
+  .form-group { margin-bottom: 22px; }
+
+  .btn-submit { background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s; letter-spacing: 0.3px; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5,150,105,0.35); }
+
+  .alert-err { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; font-size: 0.9rem; }
+
+  .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.88rem; color: #1e40af; }
+  .info-box i { margin-right: 6px; }
+
+  .cost-preview { background: #f0fdf4; border-radius: 10px; padding: 16px 20px; margin-top: 14px; display: none; }
+  .cost-preview .cost-label { font-size: 0.8rem; color: #6b7280; text-transform: uppercase; font-weight: 700; }
+  .cost-preview .cost-value { font-size: 1.4rem; font-weight: 700; color: #059669; }
+</style>
+
+<div class="page-wrap">
+  <a href="/customer-orders" class="back-link"><i class="bi bi-arrow-left"></i> Back to My Orders</a>
+
+  <div class="card-main">
+    <div class="card-header-custom">
+      <h1><i class="bi bi-calendar-plus me-2"></i>Request More Days</h1>
+      <p>Ask the owner to extend your rental period</p>
+    </div>
+
+    <div class="card-body-custom">
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <div class="summary-item">
+          <label>Equipment</label>
+          <span>{{ obj.equipment.name }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Order #</label>
+          <span>#{{ obj.order.id }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Current Check-In</label>
+          <span>{{ obj.order.Check_in|date:"d M Y" }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Current Check-Out</label>
+          <span>{{ obj.order.Check_out|date:"d M Y" }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Current Duration</label>
+          <span>{{ obj.order.get_days }} Days</span>
+        </div>
+        <div class="summary-item">
+          <label>Daily Rate</label>
+          <span>₹{{ obj.order.rent }}/day</span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <i class="bi bi-info-circle-fill"></i>
+        After you submit, the owner will review your request. Once approved, you will need to pay for the extra days.
+      </div>
+
+      {% if obj.error %}
+      <div class="alert-err"><i class="bi bi-exclamation-circle me-2"></i>{{ obj.error }}</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label class="form-label-custom" for="id_new_checkout_date">
+            <i class="bi bi-calendar-event me-1 text-success"></i>New Check-Out Date
+          </label>
+          {{ obj.form.new_checkout_date }}
+          <small class="text-muted">Must be after {{ obj.order.Check_out|date:"d M Y" }}</small>
+        </div>
+
+        <div class="cost-preview" id="costPreview">
+          <div class="cost-label">Estimated Extra Cost</div>
+          <div class="cost-value" id="costValue">₹0</div>
+          <small class="text-muted" id="costDetail"></small>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label-custom" for="id_customer_note">
+            <i class="bi bi-chat-dots me-1 text-success"></i>Note to Owner (Optional)
+          </label>
+          {{ obj.form.customer_note }}
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <i class="bi bi-send me-2"></i>Send Extension Request
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const dateInput = document.getElementById('id_new_checkout_date');
+  const checkoutStr = '{{ obj.order.Check_out|date:"Y-m-d" }}';
+  const dailyRate = {{ obj.order.rent }};
+  const preview = document.getElementById('costPreview');
+  const costVal = document.getElementById('costValue');
+  const costDetail = document.getElementById('costDetail');
+
+  // Set min date to day after current checkout
+  const minDate = new Date(checkoutStr);
+  minDate.setDate(minDate.getDate() + 1);
+  dateInput.min = minDate.toISOString().split('T')[0];
+
+  dateInput.addEventListener('change', function () {
+    const newDate = new Date(this.value);
+    const oldDate = new Date(checkoutStr);
+    const diff = Math.round((newDate - oldDate) / (1000 * 60 * 60 * 24));
+    if (diff > 0) {
+      preview.style.display = 'block';
+      costVal.textContent = '₹' + (diff * dailyRate).toLocaleString('en-IN');
+      costDetail.textContent = diff + ' extra day(s) × ₹' + dailyRate + '/day';
+    } else {
+      preview.style.display = 'none';
+    }
+  });
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,156 @@
+{% block content %}
+{% include 'Navbar.html' %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+  body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%); min-height: 100vh; }
+  .page-wrap { max-width: 700px; margin: 50px auto; padding: 0 20px 60px; }
+
+  .back-link { display: inline-flex; align-items: center; gap: 6px; color: #d97706; font-weight: 500; text-decoration: none; margin-bottom: 30px; font-size: 0.9rem; transition: gap 0.2s; }
+  .back-link:hover { gap: 10px; color: #b45309; }
+
+  .card-main { background: white; border-radius: 20px; box-shadow: 0 8px 40px rgba(245,158,11,0.12); overflow: hidden; }
+
+  .card-header-custom { background: linear-gradient(135deg, #f59e0b, #fbbf24); padding: 35px 35px 30px; color: white; }
+  .card-header-custom h1 { font-size: 1.7rem; font-weight: 700; margin: 0 0 6px; }
+  .card-header-custom p  { opacity: 0.88; margin: 0; font-size: 0.95rem; }
+
+  .card-body-custom { padding: 35px; }
+
+  .order-summary { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 12px; padding: 20px 22px; margin-bottom: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .summary-item label { font-size: 0.72rem; color: #6b7280; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 3px; }
+  .summary-item span  { font-size: 1rem; font-weight: 600; color: #1e293b; }
+
+  .form-label-custom { font-weight: 600; color: #374151; font-size: 0.9rem; margin-bottom: 8px; display: block; }
+  .form-group { margin-bottom: 22px; }
+
+  .btn-submit { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; border: none; padding: 14px 30px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
+
+  .alert-err { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; font-size: 0.9rem; }
+
+  .refund-box { background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; }
+  .refund-box .refund-title { font-weight: 700; color: #166534; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 8px; }
+  .refund-preview { font-size: 1.5rem; font-weight: 700; color: #059669; }
+  .refund-detail { font-size: 0.85rem; color: #6b7280; margin-top: 4px; }
+
+  .warn-box { background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.88rem; color: #92400e; }
+  .warn-box i { margin-right: 6px; }
+</style>
+
+<div class="page-wrap">
+  <a href="/customer-orders" class="back-link"><i class="bi bi-arrow-left"></i> Back to My Orders</a>
+
+  <div class="card-main">
+    <div class="card-header-custom">
+      <h1><i class="bi bi-calendar-minus me-2"></i>Return Equipment Early</h1>
+      <p>Finished your work sooner? Request a refund for unused days</p>
+    </div>
+
+    <div class="card-body-custom">
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <div class="summary-item">
+          <label>Equipment</label>
+          <span>{{ obj.equipment.name }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Order #</label>
+          <span>#{{ obj.order.id }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Check-In</label>
+          <span>{{ obj.order.Check_in|date:"d M Y" }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Current Check-Out</label>
+          <span>{{ obj.order.Check_out|date:"d M Y" }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Total Days</label>
+          <span>{{ obj.order.get_days }} Days</span>
+        </div>
+        <div class="summary-item">
+          <label>Daily Rate</label>
+          <span>₹{{ obj.order.rent }}/day</span>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        After you submit, the owner will review your early return request and confirm the refund for remaining days. Equipment will be marked as Available.
+      </div>
+
+      {% if obj.error %}
+      <div class="alert-err"><i class="bi bi-exclamation-circle me-2"></i>{{ obj.error }}</div>
+      {% endif %}
+
+      <!-- Live Refund Preview -->
+      <div class="refund-box" id="refundBox" style="display:none;">
+        <div class="refund-title"><i class="bi bi-arrow-return-left me-1"></i>Estimated Refund</div>
+        <div class="refund-preview" id="refundValue">₹0</div>
+        <div class="refund-detail" id="refundDetail"></div>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label class="form-label-custom" for="id_new_checkout_date">
+            <i class="bi bi-calendar-x me-1 text-warning"></i>Actual Return Date
+          </label>
+          {{ obj.form.new_checkout_date }}
+          <small class="text-muted">Must be before {{ obj.order.Check_out|date:"d M Y" }}</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label-custom" for="id_customer_note">
+            <i class="bi bi-chat-dots me-1 text-warning"></i>Reason for Early Return (Optional)
+          </label>
+          {{ obj.form.customer_note }}
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <i class="bi bi-send me-2"></i>Submit Early Return Request
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const dateInput = document.getElementById('id_new_checkout_date');
+  const checkoutStr = '{{ obj.order.Check_out|date:"Y-m-d" }}';
+  const checkinStr  = '{{ obj.order.Check_in|date:"Y-m-d" }}';
+  const dailyRate   = {{ obj.order.rent }};
+  const refundBox   = document.getElementById('refundBox');
+  const refundVal   = document.getElementById('refundValue');
+  const refundDetail= document.getElementById('refundDetail');
+
+  // Min: today (can't return in past), Max: day before checkout
+  const today = new Date().toISOString().split('T')[0];
+  const maxDate = new Date(checkoutStr);
+  maxDate.setDate(maxDate.getDate() - 1);
+
+  dateInput.min = today;
+  dateInput.max = maxDate.toISOString().split('T')[0];
+
+  dateInput.addEventListener('change', function () {
+    const newDate = new Date(this.value);
+    const oldDate = new Date(checkoutStr);
+    const savedDays = Math.round((oldDate - newDate) / (1000 * 60 * 60 * 24));
+    if (savedDays > 0) {
+      refundBox.style.display = 'block';
+      refundVal.textContent = '₹' + (savedDays * dailyRate).toLocaleString('en-IN');
+      refundDetail.textContent = savedDays + ' saved day(s) × ₹' + dailyRate + '/day — refund subject to owner approval';
+    } else {
+      refundBox.style.display = 'none';
+    }
+  });
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

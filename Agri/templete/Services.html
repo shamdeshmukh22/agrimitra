@@ -1,0 +1,266 @@
+{% include 'Navbar.html' %}
+<div class="nav-underline"></div>
+
+{% load static %}
+{% block content %}
+<header class="hero-minimalist">
+    <div class="hero-overlay-gradient"></div>
+    <div class="container text-center py-5 position-relative">
+        <div class="reveal-anim">
+            <span class="badge-premium mb-3">Next-Gen Farming</span>
+            <h1 class="display-3 fw-800 text-white mb-3">Empowering Growth <br><span class="text-emerald-glow">Through Innovation</span></h1>
+            <p class="hero-description mx-auto mb-4">
+                Access professional-grade machinery without the heavy investment. Rent. Harvest. Succeed.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/equipment" class="btn-premium-solid">Browse Gear</a>
+                <a href="#services" class="btn-premium-outline">Our Mission</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="services" class="py-5 bg-light-surface">
+    <div class="container">
+        <div class="glass-header mb-5 p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h6 class="text-emerald fw-bold text-uppercase ls-2">Categories</h6>
+                    <h2 class="fw-800 slate-900 mb-0">Our Rental Ecosystem</h2>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <span class="count-badge">6 Specialized Units</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon tractor-bg"><i class="fas fa-tractor"></i></div>
+                    <div class="card-body-new">
+                        <h4>Heavy Machinery</h4>
+                        <p>Optimized for rugged terrain and large-scale plowing operations.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon harvest-bg"><i class="fas fa-seedling"></i></div>
+                    <div class="card-body-new">
+                        <h4>Harvesting Tools</h4>
+                        <p>Efficiency at scale. Reduce post-harvest loss with modern cutters.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon water-bg"><i class="fas fa-faucet-drip"></i></div>
+                    <div class="card-body-new">
+                        <h4>Irrigation Kits</h4>
+                        <p>Smart water management for higher crop resilience and yield.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon drone-bg"><i class="fas fa-satellite-dish"></i></div>
+                    <div class="card-body-new">
+                        <h4>Drone Mapping</h4>
+                        <p>Aerial data analysis to pinpoint soil health and nutrient needs.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon transport-bg"><i class="fas fa-truck-moving"></i></div>
+                    <div class="card-body-new">
+                        <h4>Supply Logistics</h4>
+                        <p>Seamless transport from farm-gate to market storage hubs.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="bento-card">
+                    <div class="card-icon gear-bg"><i class="fas fa-bolt"></i></div>
+                    <div class="card-body-new">
+                        <h4>Precision Tools</h4>
+                        <p>Portable power tillers and handheld electric farm assistants.</p>
+                        <a href="/equipment" class="arrow-link">Explore <i class="fas fa-long-arrow-alt-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* 1. Global & Font Overrides */
+:root {
+    --emerald: #10b981;
+    --slate: #0f172a;
+    --soft-bg: #f8fafc;
+}
+
+.ls-2 { letter-spacing: 2px; }
+
+/* 2. New Unique Hero: Minimalist Aerial View */
+.hero-minimalist {
+    position: relative;
+    padding: 120px 0;
+    /* Clean aerial crop field image */
+    background: url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=2000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 30vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-overlay-gradient {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(16, 185, 129, 0.2) 100%);
+}
+
+.text-emerald-glow {
+    color: var(--emerald);
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.hero-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.15rem;
+    max-width: 650px;
+    font-weight: 500;
+}
+
+/* 3. Unique Bento Cards */
+.bento-card {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 35px;
+    height: 100%;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.bento-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.1);
+    border-color: var(--emerald);
+}
+
+.card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    transition: 0.4s;
+}
+
+.bento-card:hover .card-icon {
+    transform: rotateY(180deg);
+}
+
+/* Specific Card Themes */
+.tractor-bg { background: #ecfdf5; color: #059669; }
+.harvest-bg { background: #fefce8; color: #ca8a04; }
+.water-bg { background: #eff6ff; color: #2563eb; }
+.drone-bg { background: #f5f3ff; color: #7c3aed; }
+.transport-bg { background: #fff7ed; color: #ea580c; }
+.gear-bg { background: #fff1f2; color: #e11d48; }
+
+.card-body-new h4 {
+    font-weight: 800;
+    color: var(--slate);
+    margin-bottom: 15px;
+}
+
+.card-body-new p {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Arrow Link */
+.arrow-link {
+    margin-top: auto;
+    color: var(--emerald);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+}
+
+.arrow-link i { transition: transform 0.3s; }
+.arrow-link:hover i { transform: translateX(8px); }
+
+/* 4. Glass Interface Elements */
+.glass-header {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.count-badge {
+    background: var(--slate);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* 5. Premium Buttons */
+.btn-premium-solid {
+    background: var(--emerald);
+    color: white;
+    padding: 14px 35px;
+    border-radius: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-premium-outline {
+    background: transparent;
+    color: white;
+    padding: 14px 35px;
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-premium-outline:hover {
+    background: white;
+    color: var(--slate);
+}
+</style>
+{% endblock %}
+{% include 'footer.html' %}

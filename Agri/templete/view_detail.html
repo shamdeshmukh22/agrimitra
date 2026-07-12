@@ -1,0 +1,221 @@
+{% block content %}
+{% include 'Navbar.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'view_detail.css' %}">
+
+<div class="bg-light-surface min-vh-100 py-5">
+    <div class="container">
+        <!-- Breadcrumbs -->
+        <nav class="mb-4" style="--bs-breadcrumb-divider: '›';">
+            <ol class="breadcrumb mb-0 py-2 px-3 bg-white rounded-pill shadow-soft d-inline-flex border">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item active text-primary-green fw-semibold" aria-current="page">{{ obj.equipment.categories }}</li>
+                <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">{{ obj.equipment.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <!-- Left Side: Image -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-soft p-3 rounded-4 position-sticky" style="top: 100px; z-index: 10;">
+                    {% if obj.equipment.image %}
+                        <img src="{{ obj.equipment.image.url }}" class="w-100 object-fit-cover rounded-3" style="height: 380px;" alt="{{ obj.equipment.name }}">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-light text-muted rounded-3" style="height: 380px;">
+                            <i class="bi bi-image fs-1"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div class="col-lg-7">
+                <div class="ps-lg-3">
+                    <span class="category-badge mb-2 d-inline-block">{{ obj.equipment.categories }}</span>
+                    <h1 class="fw-extrabold text-dark mb-3">{{ obj.equipment.name }}</h1>
+                    
+                    <p class="text-muted small mb-4 d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt-fill text-primary-green"></i> <span>{{ obj.owner.address }}</span>  
+                        <span class="badge bg-danger-subtle text-danger rounded-pill px-2.5 py-1">{{ obj.distance }} km away</span>
+                    </p>
+
+                    <!-- Pricing Box -->
+                    <div class="card border-0 shadow-soft border-start border-4 border-success p-4 rounded-4 mb-4 bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted fs-7 d-block text-uppercase fw-semibold mb-1">Rental Rate</span>
+                                <div class="h3 fw-extrabold text-emerald mb-0">₹{{ obj.equipment.rent }} <span class="text-muted fs-6 fw-normal">/ day</span></div>
+                            </div>
+                            <div>
+                                <span class="badge bg-success-subtle text-emerald border border-success-subtle py-2.5 px-3 rounded-3 d-inline-flex align-items-center gap-2" 
+                                      type="button" data-bs-toggle="modal" data-bs-target="#calendarModal" style="cursor: pointer;">
+                                    <i class="bi bi-calendar3"></i> Check Availability
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Modal -->
+                        <div class="modal fade" id="calendarModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                    <div class="modal-header border-0 pb-0">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body pt-0">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <button class="btn btn-sm btn-outline-secondary border-0" id="prevMonth">&lt;</button>
+                                            <h6 class="mb-0 fw-bold text-dark" id="monthYearLabel">Month Year</h6>
+                                            <button class="btn btn-sm btn-outline-secondary border-0" id="nextMonth">&gt;</button>
+                                        </div>
+                                        <div class="cal-grid mb-1" id="weekdaysRow"></div>
+                                        <div class="cal-grid" id="calendarGrid"></div>
+                                    </div>
+                                    <div class="modal-footer border-0 justify-content-center pt-0">
+                                        <button type="button" class="btn btn-link btn-sm text-decoration-none text-emerald" id="goToToday">Go to Today</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <!-- Spec Grid -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-white border shadow-soft rounded-4 h-100">
+                                <i class="bi bi-info-circle fs-4 text-primary-green"></i>
+                                <div>
+                                    <span class="text-muted fs-7 d-block">Status</span>
+                                    <span class="fw-bold small {% if obj.equipment.status == 'Available' %}text-success{% else %}text-danger{% endif %}">
+                                        {{ obj.equipment.status }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-white border shadow-soft rounded-4 h-100">
+                                <i class="bi bi-lightning fs-4 text-primary-green"></i>
+                                <div>
+                                    <span class="text-muted fs-7 d-block">Condition</span>
+                                    <span class="fw-bold text-dark small">{{ obj.equipment.condition }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-white border shadow-soft rounded-4 h-100">
+                                <i class="bi bi-calendar3 fs-4 text-primary-green"></i>
+                                <div>
+                                    <span class="text-muted fs-7 d-block">Model Year</span>
+                                    <span class="fw-bold text-dark small">{{ obj.equipment.year }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="card border-0 shadow-soft p-4 rounded-4 mb-4 bg-white">
+                        <h6 class="fw-bold text-uppercase text-muted mb-3 fs-7">Description</h6>
+                        <div class="description-text text-secondary lh-lg">{{ obj.equipment.Description }}</div>
+                    </div>
+
+                    <!-- Owner & Actions -->
+                    {% if obj.equipment.user_id != obj.user_id %}
+                    <div class="card border-0 shadow-soft p-4 rounded-4 bg-white">
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-6 border-end-md">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://ui-avatars.com/api/?name={{obj.owner.name}}&background=059669&color=fff" class="rounded-circle shadow-sm" width="48" height="48">
+                                    <div>
+                                        <div class="fw-bold text-dark">{{obj.owner.name}}</div>
+                                        <div class="text-emerald d-flex align-items-center gap-1" style="font-size: 11px; font-weight: 600;">
+                                            <i class="bi bi-shield-check"></i> Identity Verified Owner
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 ps-md-4">
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'rent-now' obj.equipment.id %}" class="btn btn-primary-green w-100 py-3 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-cart-plus"></i> Rent Now
+                                    </a>
+                                    <a href="https://wa.me/{{ obj.owner.mobile }}" class="btn btn-outline-primary-green px-3 py-3 rounded-3 d-flex align-items-center justify-content-center" target="_blank">
+                                        <i class="bi bi-whatsapp"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="card border-0 shadow-soft p-4 rounded-4 bg-white">
+                        <a href="{% url 'edit-my-equipment' obj.equipment.id %}" class="btn btn-primary-green w-100 py-3 rounded-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-pencil-square"></i> Edit Equipment
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Pass Django data to JS
+    const bookedDatesArray = {{ obj.booked_dates|safe }};
+
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
+    let displayDate = new Date();
+
+    function initCalendar() {
+        const weekdaysRow = document.getElementById('weekdaysRow');
+        weekdaysRow.innerHTML = DAYS.map(d => `<div class="cal-day-head">${d}</div>`).join('');
+        renderMonth();
+
+        document.getElementById('prevMonth').onclick = () => { displayDate.setMonth(displayDate.getMonth() - 1); renderMonth(); };
+        document.getElementById('nextMonth').onclick = () => { displayDate.setMonth(displayDate.getMonth() + 1); renderMonth(); };
+        document.getElementById('goToToday').onclick = () => { displayDate = new Date(); renderMonth(); };
+    }
+
+    function renderMonth() {
+        const grid = document.getElementById('calendarGrid');
+        const label = document.getElementById('monthYearLabel');
+        const now = new Date();
+        grid.innerHTML = '';
+        
+        let year = displayDate.getFullYear();
+        let month = displayDate.getMonth();
+        label.innerText = `${MONTHS[month]} ${year}`;
+
+        let firstDayIndex = new Date(year, month, 1).getDay();
+        let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let e = 0; e < firstDayIndex; e++) {
+            let div = document.createElement('div'); div.className = "cal-date empty";
+            grid.appendChild(div);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            let dateDiv = document.createElement('div');
+            dateDiv.className = "cal-date";
+            dateDiv.innerText = d;
+
+            // Formatting date to check booking: YYYY-MM-DD
+            let curStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            
+            // Check against booked ranges
+            bookedDatesArray.forEach(range => {
+                if (curStr >= range.check_in && curStr <= range.check_out) {
+                    dateDiv.classList.add('booked-date');
+                }
+            });
+
+            if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
+                dateDiv.classList.add('today-circle');
+            }
+            grid.appendChild(dateDiv);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', initCalendar);
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

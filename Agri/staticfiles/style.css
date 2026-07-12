@@ -1,0 +1,548 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Design System Variables */
+:root {
+    --ag-primary:     #059669; /* Emerald Green */
+    --ag-primary-dark: #047857; /* Emerald Dark */
+    --ag-primary-light:#ecfdf5; /* Emerald Light */
+    --ag-dark:        #0f172a; /* Slate 900 */
+    --ag-text:        #334155; /* Slate 700 */
+    --ag-muted:       #64748b; /* Slate 500 */
+    --ag-border:      #e2e8f0; /* Slate 200 */
+    --ag-surface:     #f8fafc; /* Slate 50 */
+    --ag-white:       #ffffff;
+    --ag-danger:      #ef4444;
+    --ag-warning:     #f59e0b;
+    --ag-info:        #3b82f6;
+    --ag-success:     #10b981;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--ag-surface);
+    color: var(--ag-text);
+}
+
+/* Reset capitalize text transform and default serif font family from * */
+* {
+    box-sizing: border-box;
+}
+
+*:not(button):not(.btn):not(.badge):not(.text-uppercase):not(th) {
+    text-transform: none !important;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Custom Navbar Style (Sticky Glassmorphism) */
+.modern-navbar {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.3s ease;
+}
+
+.modern-navbar .brand-text {
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.8px;
+    color: var(--ag-dark) !important;
+}
+
+.modern-navbar .brand-text .dot {
+    color: var(--ag-primary);
+}
+
+.modern-navbar .nav-link {
+    color: var(--ag-muted) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.2s ease;
+}
+
+.modern-navbar .nav-link:hover,
+.modern-navbar .nav-link.active {
+    color: var(--ag-primary) !important;
+}
+
+/* Navigation Auth Buttons */
+.btn-login-modern {
+    background-color: var(--ag-dark);
+    color: var(--ag-white) !important;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 8px 20px;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-login-modern:hover {
+    background-color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.btn-logout-modern {
+    background-color: #fef2f2;
+    color: var(--ag-danger) !important;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 8px 20px;
+    border: 1px solid #fee2e2;
+    transition: all 0.2s ease;
+}
+
+.btn-logout-modern:hover {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+}
+
+/* Core Buttons */
+.btn-primary-green {
+    background-color: var(--ag-primary) !important;
+    color: var(--ag-white) !important;
+    font-weight: 600;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary-green:hover {
+    background-color: var(--ag-primary-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+}
+
+.btn-outline-primary-green {
+    background-color: transparent !important;
+    color: var(--ag-primary) !important;
+    border: 1px solid var(--ag-primary) !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary-green:hover {
+    background-color: var(--ag-primary-light) !important;
+    color: var(--ag-primary-dark) !important;
+    border-color: var(--ag-primary-dark) !important;
+}
+
+.btn-secondary-green {
+    background-color: var(--ag-primary-light) !important;
+    color: var(--ag-primary) !important;
+    font-weight: 600;
+    border: 1px solid rgba(5, 150, 105, 0.1) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary-green:hover {
+    background-color: rgba(5, 150, 105, 0.15) !important;
+}
+
+/* Input & Form Styling Override */
+.form-control:focus, .form-select:focus {
+    border-color: var(--ag-primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.15) !important;
+}
+
+.form-floating > .form-control:focus ~ label {
+    color: var(--ag-primary) !important;
+}
+
+/* Auth Viewport & Card */
+.auth-viewport {
+    min-height: calc(100vh - 75px);
+    background: radial-gradient(circle at top right, var(--ag-primary-light), var(--ag-surface));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.auth-card {
+    background: var(--ag-white);
+    border: 1px solid var(--ag-border);
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    width: 100%;
+    max-width: 480px;
+}
+
+.auth-card-accent {
+    height: 5px;
+    background: linear-gradient(90deg, var(--ag-primary), #3b82f6);
+}
+
+.modern-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ag-muted);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.025em;
+}
+
+.modern-form input, .modern-form select, .modern-form textarea {
+    border-radius: 10px;
+    border: 1px solid var(--ag-border);
+    background-color: var(--ag-surface);
+    padding: 10px 14px;
+    transition: all 0.2s ease;
+}
+
+.modern-form input:focus, .modern-form select:focus, .modern-form textarea:focus {
+    background-color: var(--ag-white);
+    border-color: var(--ag-primary);
+    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+    outline: none;
+}
+
+/* Clean Footer Styles (Dark theme optimized) */
+.modern-footer {
+    background-color: var(--ag-dark) !important;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modern-footer h5, .modern-footer h6, .modern-footer h3 {
+    color: var(--ag-white) !important;
+}
+
+.modern-footer .footer-heading {
+    color: #f8fafc;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+}
+
+.modern-footer .text-muted-light {
+    color: #94a3b8 !important;
+}
+
+.modern-footer .footer-bio {
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+
+.modern-footer .accent-line-sm {
+    width: 30px;
+    height: 3px;
+    background: var(--ag-primary);
+    margin-top: 8px;
+    border-radius: 10px;
+}
+
+.modern-footer a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.modern-footer a:hover {
+    color: var(--ag-primary);
+}
+
+.modern-footer .footer-nav {
+    list-style: none;
+    padding: 0;
+}
+
+.modern-footer .footer-nav li {
+    margin-bottom: 10px;
+}
+
+.modern-footer .footer-nav a:hover {
+    padding-left: 6px;
+}
+
+.modern-footer .social-glass-links {
+    display: flex;
+    gap: 12px;
+}
+
+.modern-footer .social-bubble {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ag-white) !important;
+    transition: all 0.3s ease;
+}
+
+.modern-footer .social-bubble:hover {
+    background: var(--ag-primary);
+    border-color: var(--ag-primary);
+    color: var(--ag-white) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(5, 150, 105, 0.25);
+}
+
+.modern-footer .newsletter-box {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modern-footer .newsletter-box input {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    color: var(--ag-white);
+    width: 100%;
+    outline: none;
+}
+
+.modern-footer .newsletter-box input::placeholder {
+    color: #64748b;
+}
+
+.modern-footer .btn-send {
+    background: var(--ag-primary);
+    border: none;
+    color: var(--ag-white);
+    width: 42px;
+    height: 38px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.modern-footer .btn-send:hover {
+    background: var(--ag-primary-dark);
+}
+
+.modern-footer .footer-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 2rem 0;
+}
+
+.modern-footer .dot-sep {
+    height: 4px;
+    width: 4px;
+    background: #334155;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+/* Card Zoom and Design */
+.hover-zoom {
+    overflow: hidden;
+    position: relative;
+}
+
+.hover-zoom img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-zoom:hover img {
+    transform: scale(1.05);
+}
+
+/* Category indicator */
+.category-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ag-primary);
+}
+
+/* Status Indicator Dot */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Shadow utilities */
+.shadow-soft {
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.02) !important;
+}
+
+.shadow-medium {
+    box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03) !important;
+}
+
+/* Hero Carousel Styling */
+.hero-carousel {
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.carousel-item {
+    height: 80vh;
+    min-height: 450px;
+    position: relative;
+    background-color: #000;
+}
+
+.carousel-item img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover;
+    object-position: center;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+    text-align: left;
+    left: 8%;
+    bottom: 25%;
+    max-width: 650px;
+    padding: 0 20px;
+}
+
+.badge-tag {
+    background-color: rgba(5, 150, 105, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(5, 150, 105, 0.3);
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 30px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Feature Bento Cards */
+.feature-card {
+    background: var(--ag-white);
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--ag-border);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.08);
+    border-color: rgba(5, 150, 105, 0.3);
+}
+
+.icon-circle {
+    width: 54px;
+    height: 54px;
+    background: var(--ag-primary-light);
+    color: var(--ag-primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Product Cards */
+.product-glass-card {
+    background: var(--ag-white);
+    border-radius: 20px;
+    padding: 12px;
+    border: 1px solid var(--ag-border);
+    transition: all 0.3s ease;
+}
+
+.product-glass-card:hover {
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(5, 150, 105, 0.2);
+}
+
+.product-img {
+    height: 220px;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: var(--ag-white);
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 800;
+    color: var(--ag-primary-dark);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.product-info {
+    padding: 1.25rem 0.5rem 0.5rem;
+}
+
+.btn-dark-modern {
+    background: var(--ag-dark);
+    color: var(--ag-white) !important;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-dark-modern:hover {
+    background: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+/* CTA Banner */
+.cta-banner {
+    background: linear-gradient(135deg, var(--ag-primary-dark) 0%, var(--ag-dark) 100%);
+    border-radius: 24px;
+}
+
+/* Utility Helpers */
+.py-6 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.ls-2 {
+    letter-spacing: 0.15em;
+}
+
+.text-emerald {
+    color: var(--ag-primary) !important;
+}
+
+.bg-light-surface {
+    background-color: var(--ag-surface);
+}

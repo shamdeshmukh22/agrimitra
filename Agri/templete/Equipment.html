@@ -1,0 +1,156 @@
+{% load static %}
+{% include 'Navbar.html' %} {% block content %}
+
+<div class="bg-light-surface min-vh-100 py-5">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 gap-3">
+            <div>
+                <h1 class="h3 fw-extrabold text-dark mb-1">Browse Catalog</h1>
+                <p class="text-muted mb-0">Find and rent verified agricultural machinery in your region.</p>
+            </div>
+            <span class="badge bg-white text-dark border shadow-soft px-3 py-2 rounded-pill fs-7 d-inline-flex align-items-center">
+                <i class="bi bi-grid-fill text-primary-green me-1"></i> {{ obj.equipment_list|length }} Tools Found
+            </span>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="card border-0 shadow-soft rounded-4 mb-5">
+            <div class="card-body p-4">
+                <form method="GET" action="." class="row g-3"> 
+                    <div class="col-12 col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0 text-muted">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                class="form-control bg-light border-0 ps-0 fs-6 py-2" 
+                                placeholder="Search machinery, tractors..."
+                                value="{{ request.GET.search|default:'' }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <select name="category" class="form-select bg-light border-0 py-2 fs-6" onchange="this.form.submit()">
+                            <option value="">All Categories</option>
+                            {% for cat in obj.categories %}
+                                <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"i" %}selected{% endif %}>{{cat.categories}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <select name="sort" class="form-select bg-light border-0 py-2 fs-6" onchange="this.form.submit()">
+                            <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+                            <option value="price-low" {% if request.GET.sort == 'price-low' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price-high" {% if request.GET.sort == 'price-high' %}selected{% endif %}>Price: High to Low</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Catalog Grid -->
+        {% if not obj.equipment_list %}
+            <div class="card shadow-soft border-0 rounded-4">
+                <div class="card-body py-5 text-center">
+                    <i class="bi bi-exclamation-circle text-muted display-4 mb-3 d-block"></i>
+                    <p class="text-muted mb-0 fs-5">No equipment found matching your criteria.</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="row g-4">
+                {% for item in obj.equipment %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="custom-card h-100 shadow-soft border-0 d-flex flex-column overflow-hidden">
+                            <!-- Image container -->
+                            <div class="ratio ratio-16x9 bg-light overflow-hidden position-relative hover-zoom">
+                                {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="card-img-top object-fit-cover w-100 h-100" alt="{{ item.name }}">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center text-muted h-100 w-100">
+                                        <i class="bi bi-image fs-3 me-2"></i> No Image
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body p-4 d-flex flex-column justify-content-between flex-grow-1">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="category-badge">{{ item.category|upper }}</span>
+                                        {% if item.status == 'Available' %}
+                                            <span class="badge bg-success-subtle text-emerald rounded-pill px-2.5 py-1.5 fs-7 d-flex align-items-center gap-1.5">
+                                                <span class="status-dot bg-success"></span> Available
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-danger-subtle text-danger rounded-pill px-2.5 py-1.5 fs-7 d-flex align-items-center gap-1.5">
+                                                <span class="status-dot bg-danger"></span> Rented
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <h5 class="fw-bold mb-2 text-dark">{{ item.name }}</h5>
+                                    <p class="text-muted small mb-4 text-truncate-2">{{ item.Description|truncatechars:90 }}</p>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                                    <div>
+                                        <span class="text-muted fs-7 d-block">Rental Rate</span>
+                                        <span class="h5 fw-bold text-dark mb-0">₹{{ item.rent }}<span class="fs-7 text-muted fw-normal">/day</span></span>
+                                    </div>
+                                    <a href="{% url 'view-more' item.id %}" class="btn btn-primary-green rounded-3 px-3 py-2 fs-7 d-flex align-items-center gap-1">
+                                        View details <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination Controls -->
+            {% if obj.page_obj.has_other_pages %}
+            <nav aria-label="Equipment pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if obj.page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ obj.page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for i in obj.page_obj.paginator.page_range %}
+                        {% if obj.page_obj.number == i %}
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{{ i }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if obj.page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ obj.page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% include 'footer.html' %} {% endblock %}
